@@ -39,6 +39,7 @@ def recieve(port):
             d = int(struct.unpack('d', r)[0])
             # d = r
             data.append(d)
+            
         if len(data) == 160:
             DATA.append(data)
 
