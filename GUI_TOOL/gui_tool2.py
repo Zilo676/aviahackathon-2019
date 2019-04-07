@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 from threading import Thread
 from time import sleep
+import os
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
@@ -14,8 +15,13 @@ import numpy as np
 import struct
 
 
+def cls():
+    os.system('cls')
+
+
 def f(A, n=8): 
     return [A[i:i+n] for i in range(0, len(A), n)]
+
 
 def recieve(port):
     global socke
@@ -30,18 +36,20 @@ def recieve(port):
                 continue
     while True:
         data = []
-        # recvdata = sock.recv(160)
-        recvdata = f(sock.recv(160*8))
-        sleep(0.05)
-        print(recvdata)
+        recvdata = sock.recv(160)
+        # recvdata = f(sock.recv(160*8))
+        #sleep(0.001)
+        # print(recvdata)
         # recvdata = struct.unpack('d', recvdata)
         for r in recvdata:
             d = int(struct.unpack('d', r)[0])
             # d = r
             data.append(d)
-            
+
         if len(data) == 160:
             DATA.append(data)
+            #cls()
+            #print(DATA)
 
 
 def animationplot(i):
@@ -52,7 +60,7 @@ def animationplot(i):
         data = np.sin(2 * np.pi * 33) + data
 
         current_y = data.copy()
-        print(current_y)
+        #print(current_y)
 
         plot.clear()
         plot.plot(t, data)
