@@ -11,6 +11,10 @@ import UIKit
 class Sock: NSObject {
 
     static let shared = Sock()
+    var delegate: ViewController?
+    
+    var lastMessage: String = ""
+    var counter = 0
     
     var inputStream: InputStream!
     let maxReadLength = 4096
@@ -23,7 +27,7 @@ class Sock: NSObject {
         
         // 2
         CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
-                                           "http://294c1b38.ngrok.io" as CFString,
+                                           "192.168.43.226" as CFString,
                                            5204,
                                            &readStream,
                                            &writeStream)
@@ -69,8 +73,8 @@ extension Sock: StreamDelegate {
             }
             
             if let message = processedMessageString(buffer: buffer, length: numberOfBytesRead) {
-                //Notify interested parties
-                print(message)
+               // print(message)
+                processMessage(message)
             }
         }
     }
@@ -87,4 +91,27 @@ extension Sock: StreamDelegate {
         
         return stringArray
     }
+}
+
+extension Sock {
+    
+    func processMessage(_ message: String) {
+        let messageArray = message.components(separatedBy: "\n")
+        for message in messageArray.dropLast() {
+            print(message)
+            if message == lastMessage {
+                if counter == 5 {
+                    print("WOW:\(message)")
+                    delegate?.process(message: message)
+                    counter = 0
+                } else {
+                    counter += 1
+                }
+            } else {
+                lastMessage = message
+                counter = 0
+            }
+        }
+    }
+    
 }

@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		C79DB313CF49751DCDD313DF /* Pods_avia_hack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1724384FB723A00E836D69 /* Pods_avia_hack.framework */; };
 		EB0DC40422589D0400E90F68 /* aliene.scn in Resources */ = {isa = PBXBuildFile; fileRef = EB0DC40322589CBE00E90F68 /* aliene.scn */; };
-		EB0EFADE2259C561004B57AC /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = EB0EFADD2259C561004B57AC /* Explode.scnp */; };
 		EB0EFAE02259D05E004B57AC /* Sock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0EFADF2259D05E004B57AC /* Sock.swift */; };
+		EB0EFAE2225A1ADA004B57AC /* shot.m4a in Resources */ = {isa = PBXBuildFile; fileRef = EB0EFAE1225A1A6F004B57AC /* shot.m4a */; };
+		EB0EFAE4225A1DE9004B57AC /* shot2.mov in Resources */ = {isa = PBXBuildFile; fileRef = EB0EFAE3225A1DE9004B57AC /* shot2.mov */; };
 		EB394AF32258927000633DD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB394AF22258927000633DD6 /* AppDelegate.swift */; };
 		EB394AF52258927000633DD6 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = EB394AF42258927000633DD6 /* art.scnassets */; };
 		EB394AF72258927000633DD6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB394AF62258927000633DD6 /* ViewController.swift */; };
@@ -25,8 +26,9 @@
 		904888A9FB31358791059330 /* Pods-avia_hack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-avia_hack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-avia_hack/Pods-avia_hack.debug.xcconfig"; sourceTree = "<group>"; };
 		CF1724384FB723A00E836D69 /* Pods_avia_hack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_avia_hack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB0DC40322589CBE00E90F68 /* aliene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = aliene.scn; sourceTree = "<group>"; };
-		EB0EFADD2259C561004B57AC /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Explode.scnp; sourceTree = "<group>"; };
 		EB0EFADF2259D05E004B57AC /* Sock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sock.swift; sourceTree = "<group>"; };
+		EB0EFAE1225A1A6F004B57AC /* shot.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = shot.m4a; sourceTree = "<group>"; };
+		EB0EFAE3225A1DE9004B57AC /* shot2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = shot2.mov; sourceTree = "<group>"; };
 		EB394AEF2258927000633DD6 /* avia_hack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = avia_hack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB394AF22258927000633DD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB394AF42258927000633DD6 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -90,7 +92,6 @@
 		EB394AF12258927000633DD6 /* avia_hack */ = {
 			isa = PBXGroup;
 			children = (
-				EB0EFADD2259C561004B57AC /* Explode.scnp */,
 				EB6A79932258AED10065FFF5 /* spaceshipturret.scn */,
 				EB6A79902258AB900065FFF5 /* cassini.scn */,
 				EB0DC40322589CBE00E90F68 /* aliene.scn */,
@@ -100,6 +101,8 @@
 				EB0EFADF2259D05E004B57AC /* Sock.swift */,
 				EB394AF82258927000633DD6 /* Main.storyboard */,
 				EB394AFB2258927200633DD6 /* Assets.xcassets */,
+				EB0EFAE1225A1A6F004B57AC /* shot.m4a */,
+				EB0EFAE3225A1DE9004B57AC /* shot2.mov */,
 				EB394AFD2258927200633DD6 /* LaunchScreen.storyboard */,
 				EB394B002258927200633DD6 /* Info.plist */,
 				EBDB6B112258A2AE00619C55 /* megoScene.scn */,
@@ -168,11 +171,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB394AF52258927000633DD6 /* art.scnassets in Resources */,
+				EB0EFAE4225A1DE9004B57AC /* shot2.mov in Resources */,
 				EB394AFF2258927200633DD6 /* LaunchScreen.storyboard in Resources */,
 				EB394AFC2258927200633DD6 /* Assets.xcassets in Resources */,
 				EB394AFA2258927000633DD6 /* Main.storyboard in Resources */,
 				EB0DC40422589D0400E90F68 /* aliene.scn in Resources */,
-				EB0EFADE2259C561004B57AC /* Explode.scnp in Resources */,
+				EB0EFAE2225A1ADA004B57AC /* shot.m4a in Resources */,
 				EBDB6B122258A2AE00619C55 /* megoScene.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

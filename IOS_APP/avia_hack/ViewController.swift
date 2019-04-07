@@ -13,6 +13,8 @@ import ARKit
 import Starscream
 import SocketIO
 
+import AVFoundation
+
 class ViewController: UIViewController, ARSCNViewDelegate {
     
     struct Const {
@@ -22,12 +24,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         static let particles1 = "particles1"
         static let particles2 = "particles2"
+        
+        static let rootSatellite1 = "rootSatellite1"
+        static let rootSatellite2 = "rootSatellite2"
+        
+        static let satellite1 = "satellite1"
+        static let satellite2 = "satellite2"
+
+        static let particlesExit = "particlesExit"
     }
 
     @IBOutlet var sceneView: ARSCNView!
     
     var socket: WebSocket!
     
+    var isRotating = false
+    
+    var player: AVAudioPlayer?
+    
+    var quit: Bool!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,7 +94,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //        }
 //
 //        socket.connect()
-        
+        Sock.shared.delegate = self
         Sock.shared.connect()
     }
     
@@ -90,6 +106,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         // Run the view's session
         sceneView.session.run(configuration)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            do {
+                guard let satellite = self.sceneView.scene.rootNode.childNode(withName: Const.satellite1, recursively: true) else { return }
+                let rotateOneSatellite = SCNAction.rotateBy(x: 0,
+                                                            y: CGFloat(Float.pi),
+                                                            z: 0,
+                                                            duration: 4)
+                
+                let rotateAlwaysSatellite = SCNAction.repeatForever(rotateOneSatellite)
+                satellite.runAction(rotateAlwaysSatellite)
+            }
+            
+            do {
+                guard let satellite = self.sceneView.scene.rootNode.childNode(withName: Const.satellite2, recursively: true) else { return }
+                let rotateOneSatellite = SCNAction.rotateBy(x: 0,
+                                                            y: CGFloat(Float.pi),
+                                                            z: 0,
+                                                            duration: 4)
+                
+                let rotateAlwaysSatellite = SCNAction.repeatForever(rotateOneSatellite)
+                satellite.runAction(rotateAlwaysSatellite)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,7 +159,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Actions
 
     @IBAction func onAction(_ sender: Any) {
-        lightShot()
+        //destroyAll()
     }
     
     @IBAction func rghtAction(_ sender: Any) {
@@ -162,7 +202,7 @@ extension ViewController {
 //            boxNode.position = SCNVector3(0, 0, 0)
 //            addShotAnimation(node: boxNode)
 //        }
-        
+        playSound()
         do {
             guard let particles = sceneView.scene.rootNode.childNode(withName: Const.particles1, recursively: true) else { return }
             particles.isHidden = false
@@ -232,11 +272,114 @@ extension ViewController {
 // MARK: Спутники
 extension ViewController {
     
-    
+    func rorateSatellites() {
+        
+        if isRotating {
+            isRotating = false
+            do {
+                guard let rootSatellite = sceneView.scene.rootNode.childNode(withName: Const.rootSatellite1, recursively: true) else { return }
+                rootSatellite.removeAllActions()
+            }
+            do {
+                guard let rootSatellite = sceneView.scene.rootNode.childNode(withName: Const.rootSatellite2, recursively: true) else { return }
+                rootSatellite.removeAllActions()
+            }
+            return
+        }
+        
+        isRotating = true
+
+        do {
+            guard let rootSatellite = sceneView.scene.rootNode.childNode(withName: Const.rootSatellite1, recursively: true) else { return }
+            let rotateOne = SCNAction.rotateBy(x: 0,
+                                               y: 0,
+                                               z: CGFloat(Float.pi),
+                                               duration: 6)
+            
+            let rotateAlways = SCNAction.repeatForever(rotateOne)
+            rootSatellite.runAction(rotateAlways)
+        }
+        
+        do {
+            guard let rootSatellite = sceneView.scene.rootNode.childNode(withName: Const.rootSatellite2, recursively: true) else { return }
+            let rotateOne = SCNAction.rotateBy(x: 0,
+                                               y: 0,
+                                               z: -CGFloat(Float.pi),
+                                               duration: 6)
+            
+            let rotateAlways = SCNAction.repeatForever(rotateOne)
+            rootSatellite.runAction(rotateAlways)
+        }
+    }
     
 }
 
+extension ViewController {
+    
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "shot2", withExtension: "mov") else { return }
+        
+        do {
+            if player == nil {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            }
+            
+            guard let player = player else { return }
+            
+            if !player.isPlaying {
+                player.play()
+            }
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+}
+
+extension ViewController {
+    
+    func destroyAll() {
+        guard let particlesExit = sceneView.scene.rootNode.childNode(withName: Const.particlesExit, recursively: true) else { return }
+
+        let system = particlesExit.particleSystems!.first!
+        particlesExit.isHidden = false
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            system.emissionDuration = 0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.close(self.quit)
+            }
+        }
+    }
+    
+    func close(_ falg: Bool) {
+        
+    }
+}
+
 extension ViewController: WebSocketDelegate {
+    
+    func process(message: String) {
+        
+        switch (message) {
+        case "2":
+            rotaterBlasterLeft()
+        case "3":
+            rotaterBlasterRight()
+        case "4":
+            lightShot()
+        case "5":
+            rorateSatellites()
+        case "6":
+            destroyAll()
+        default:
+            break
+        }
+    }
     
     func websocketDidConnect(socket: WebSocketClient) {
         print("websocket is connected")
